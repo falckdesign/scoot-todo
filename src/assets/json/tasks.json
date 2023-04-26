@@ -1,0 +1,51 @@
+[
+		{
+			"ID" : 1,
+			"DUE_DATE" : "2023-04-24T21:52:22.963Z",
+			"PRIORITY": "low",
+			"DESCRIPTION":"Tie my shoelaces on top of Empire Estate Building"
+		},
+		{
+			"ID" : 2,
+			"DUE_DATE" : "2023-04-26T00:52:22.963Z",
+			"PRIORITY": "high",
+			"DESCRIPTION":"Remove all the Lego from the room before someone steps on one of them"
+		},
+		{
+			"ID" : 3,
+			"DUE_DATE" : "2023-04-24T21:00:22.963Z",
+			"PRIORITY": "critical",
+			"DESCRIPTION":"Turn on the air conditionner already. Its too hot in here!"
+		},
+		{
+			"ID" : 4,
+			"DUE_DATE" : "2023-04-24T21:00:22.963Z",
+			"PRIORITY": "",
+			"DESCRIPTION":"Crunch some egg shells to use in the soil for the plants in the garden"
+		},
+		{
+			"ID" : 5,
+			"DUE_DATE" : "2023-04-21T21:00:22.963Z",
+			"PRIORITY": "",
+			"DESCRIPTION":"Buy watermelon to get seeds for planting"
+		},
+		{
+			"ID" : 6,
+			"DUE_DATE" : "2023-04-27T21:00:22.963Z",
+			"PRIORITY": "low",
+			"DESCRIPTION":"Plant watermelon"
+		},
+		{
+			"ID" : 7,
+			"DUE_DATE" : "2023-04-25T21:00:22.963Z",
+			"PRIORITY": "high",
+			"DESCRIPTION":"Master Cypress automated tests"
+		},
+		{
+			"ID" : 8,
+			"DUE_DATE" : "2023-04-28T21:00:22.963Z",
+			"PRIORITY": "critical",
+			"DESCRIPTION":"Take a 30 minutes walk"
+		}
+
+	]

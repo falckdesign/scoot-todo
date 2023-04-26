@@ -1,0 +1,25 @@
+<div class="card task">
+	<div class="card-header">
+		<div class="row">
+			<div class="col-auto">
+				<div class="task-due-date">
+					{{task.DUE_DATE | date:'MMM dd, hh:mm a'}}
+				</div>
+			</div>
+			<div class="col">
+				<div class="task-priority">
+					<span class="badge" [ngClass]="task | priorityBadge">{{task.PRIORITY || 'normal'}}</span>
+				</div>
+			</div>
+			<div class="col-auto">
+				<span class="task-delete">
+					<button type="button" class="btn text-bg-dark" (click)="OnClickDelete(task)">&times;</button>
+				</span>
+
+			</div>
+		</div>
+	</div>
+	<div class="card-body">
+		{{task.DESCRIPTION}}
+	</div>
+</div>

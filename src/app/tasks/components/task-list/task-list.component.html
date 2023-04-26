@@ -1,0 +1,76 @@
+<div class="container">
+	<h1>To-do list</h1>
+	<p class="text-secondary">Tasks can be searched by description or priority.</p>
+
+	<div class="row">
+		<div class="col-12 col-lg-5">
+			<div class="task-filter">
+				<input type="text" [(ngModel)]="searchText" (keyup)="filterTasks()" name="filter" class="form-control"
+					placeholder="Search by description or priority">
+			</div>
+		</div>
+		<div class="col-12 col-lg">
+			<span class="btn close text-bg-danger" (click)="clearSearch()" *ngIf="searchText">&times;</span>
+		</div>
+		<div class="col-12 col-lg-auto">
+			<div class="task-controls text-right">
+				<button type="button" class="btn btn-primary" (click)="openModal(template)">Add Task</button>
+			</div>
+		</div>
+	</div>
+
+	<div class="clearfix mb-4"></div>
+
+	<div class="task-list">
+		<div class="row">
+			<div class="col-lg-4" *ngFor="let task of taskList$ | async">
+				<app-task-card [task]="task"></app-task-card>
+			</div>
+		</div>
+
+	</div>
+</div>
+
+
+<ng-template #template>
+	<div class="modal-header">
+		<h4 class="modal-title pull-left">Add new Task</h4>
+		<button type="button" class="btn-close close pull-right" aria-label="Close" (click)="modalRef?.hide()">
+			<span aria-hidden="true" class="visually-hidden">&times;</span>
+		</button>
+	</div>
+	<div class="modal-body">
+		<form [formGroup]="addTaskForm" (ngSubmit)="onSubmitTask()">
+			<div class="form-group mb-3">
+				<label>
+					Description: <span class="small text-secondary">(at least 5 characters)</span>
+					<textarea class="form-control" formControlName="description" rows="6" minlength="5"></textarea>
+				</label>
+			</div>
+			<div class="form-group mb-3">
+				<label>
+					Due date:
+					<input type="text" formControlName="dueDate" placeholder="Select a date" class="form-control" bsDatepicker
+					[minDate]="minTaskDate">
+				</label>
+			</div>
+			<div class="form-group mb-3">
+				<label>
+					Priority:
+					<select class="form-control" formControlName="priority">
+						<option value="" selected>select:</option>
+						<option value="low">low</option>
+						<option value="high">high</option>
+						<option value="critical">critical</option>
+					</select>
+				</label>
+			</div>
+
+			<div class="form-group text-end">
+				<button type="submit" class="btn btn-primary" [disabled]="!addTaskForm.valid">Create Task</button>
+			</div>
+
+
+		</form>
+	</div>
+</ng-template>
