@@ -1,7 +1,7 @@
 import { Component, OnInit, TemplateRef } from '@angular/core';
 import { Task } from '../../models/task.model';
 import { TaskService } from '../../services/task.service';
-import { BehaviorSubject, Subject, distinctUntilChanged, filter, map } from 'rxjs';
+import { BehaviorSubject, filter } from 'rxjs';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { BsModalService, BsModalRef } from 'ngx-bootstrap/modal'
 
@@ -49,19 +49,15 @@ export class TaskListComponent implements OnInit {
 		this.taskList$.pipe(
 			filter((taskList)=>{
 			taskList = taskList.filter((task:Task)=>{
-				if(task.DESCRIPTION.includes(searchText)){
-					//console.log('task ======>('+searchText+') ', task.DESCRIPTION);
-				}
 				return task.DESCRIPTION.toLowerCase().includes(searchText.toLowerCase()) ||
 						task.PRIORITY.toLowerCase().includes(searchText.toLowerCase());
 			});
-			//console.log("taskList ///////> ", taskList);
+
 			this.filteredTaskList$.next(taskList);
 			return taskList;
 		})).subscribe({
 			next:(taskList)=>{
-				//console.log('taskList (2) => ', taskList);
-				//this.filteredTaskList$.next(taskList);
+
 			}
 		})
 	}
