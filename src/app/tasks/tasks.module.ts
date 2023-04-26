@@ -7,6 +7,7 @@ import { PriorityPipe } from './pipes/priority.pipe';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { ModalModule } from 'ngx-bootstrap/modal';
 import { BsDatepickerModule } from 'ngx-bootstrap/datepicker';
+import { TaskFilterPipe } from './pipes/task-filter.pipe';
 
 
 
@@ -14,7 +15,8 @@ import { BsDatepickerModule } from 'ngx-bootstrap/datepicker';
   declarations: [
     TaskCardComponent,
     TaskListComponent,
-    PriorityPipe
+    PriorityPipe,
+    TaskFilterPipe
   ],
   imports: [
     CommonModule,

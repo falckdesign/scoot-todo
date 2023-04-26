@@ -1,7 +1,7 @@
 import { Component, OnInit, TemplateRef } from '@angular/core';
 import { Task } from '../../models/task.model';
 import { TaskService } from '../../services/task.service';
-import { BehaviorSubject } from 'rxjs';
+import { BehaviorSubject, Subject, distinctUntilChanged, filter, map } from 'rxjs';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { BsModalService, BsModalRef } from 'ngx-bootstrap/modal'
 
@@ -13,7 +13,8 @@ import { BsModalService, BsModalRef } from 'ngx-bootstrap/modal'
 export class TaskListComponent implements OnInit {
 	public addTaskForm!: FormGroup;
 	public taskList: Task[] = [];
-	public taskList$: BehaviorSubject<any> = new BehaviorSubject([]);
+	private taskList$!: BehaviorSubject<any>;
+	public filteredTaskList$!: BehaviorSubject<any>;
 	public searchText!: string;
 	modalRef?: BsModalRef;
 	minTaskDate:Date = new Date();
@@ -32,19 +33,42 @@ export class TaskListComponent implements OnInit {
 	loadTasks() {
 		this.taskService.getTasks().subscribe({
 			next: (result) => {
-				//console.log('result: ', result);
 				this.taskList = result;
-				this.taskList$.next(result);
+				this.taskList$ = new BehaviorSubject(result);
+				this.filteredTaskList$ = new BehaviorSubject(result);
 			}
 		});
 	}
 
-	filterTasks() {
-		console.log('search: ', this.searchText);
+	filterTasks(searchText:string){
+		if(searchText.length < 3){
+			this.filteredTaskList$.next(this.taskList$.getValue());
+			return;
+		}
+
+		this.taskList$.pipe(
+			filter((taskList)=>{
+			taskList = taskList.filter((task:Task)=>{
+				if(task.DESCRIPTION.includes(searchText)){
+					//console.log('task ======>('+searchText+') ', task.DESCRIPTION);
+				}
+				return task.DESCRIPTION.toLowerCase().includes(searchText.toLowerCase()) ||
+						task.PRIORITY.toLowerCase().includes(searchText.toLowerCase());
+			});
+			//console.log("taskList ///////> ", taskList);
+			this.filteredTaskList$.next(taskList);
+			return taskList;
+		})).subscribe({
+			next:(taskList)=>{
+				//console.log('taskList (2) => ', taskList);
+				//this.filteredTaskList$.next(taskList);
+			}
+		})
 	}
 
 	clearSearch(){
 		this.searchText = '';
+		this.filterTasks('');
 	}
 
 	openModal(template: TemplateRef<any>) {
@@ -64,6 +88,7 @@ export class TaskListComponent implements OnInit {
 		let minDate:Date = new Date();
 		this.minTaskDate.setDate(minDate.getDate() + 1);
 	}
+
 	onSubmitTask() {
 		let newTask:Task = {
 			DESCRIPTION : this.addTaskForm.get('description')?.value,

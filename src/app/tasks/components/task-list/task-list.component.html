@@ -3,16 +3,16 @@
 	<p class="text-secondary">Tasks can be searched by description or priority.</p>
 
 	<div class="row">
-		<div class="col-12 col-lg-5">
+		<div class="col col-lg-5">
 			<div class="task-filter">
-				<input type="text" [(ngModel)]="searchText" (keyup)="filterTasks()" name="filter" class="form-control"
+				<input type="text" [(ngModel)]="searchText" name="filter" class="form-control" (input)="filterTasks(searchText)"
 					placeholder="Search by description or priority">
 			</div>
 		</div>
-		<div class="col-12 col-lg">
+		<div class="col-auto">
 			<span class="btn close text-bg-danger" (click)="clearSearch()" *ngIf="searchText">&times;</span>
 		</div>
-		<div class="col-12 col-lg-auto">
+		<div class="col-auto">
 			<div class="task-controls text-right">
 				<button type="button" class="btn btn-primary" (click)="openModal(template)">Add Task</button>
 			</div>
@@ -23,7 +23,7 @@
 
 	<div class="task-list">
 		<div class="row">
-			<div class="col-lg-4" *ngFor="let task of taskList$ | async">
+			<div class="col-lg-4" *ngFor="let task of filteredTaskList$ | async">
 				<app-task-card [task]="task"></app-task-card>
 			</div>
 		</div>
