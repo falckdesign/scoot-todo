@@ -7,18 +7,15 @@ import { Task } from '../models/task.model';
 })
 export class TaskFilterPipe implements PipeTransform {
 
-  transform(value: any, filteredText:string = ''): BehaviorSubject<any> {
-	//console.log('value: ', value);
-	let filteredSubject:BehaviorSubject<any>;
-	return value.subscribe({
-		next:(taskList:Task[])=>{
-			taskList = taskList.filter((task)=>{
-				return task.DESCRIPTION.includes(filteredText) || task.PRIORITY.includes(filteredText);
-			});
-			return filteredSubject.next(taskList);
-		}
+  transform(value: any, filteredText:string = ''): any {
+	if (value.length === 0 || !filteredText) {
+		return value;
+	}
+	filteredText = filteredText.toLowerCase();
+	return value.filter((task:Task)=>{
+		return task.DESCRIPTION.toLowerCase().indexOf(filteredText) !== -1 || task.PRIORITY.toLowerCase().indexOf(filteredText) !== -1;
 	})
-    //return filteredSubject;
+
   }
 
 }

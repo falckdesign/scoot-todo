@@ -14,7 +14,7 @@ export class TaskListComponent implements OnInit {
 	public addTaskForm!: FormGroup;
 	public taskList: Task[] = [];
 	private taskList$!: BehaviorSubject<any>;
-	public filteredTaskList$!: BehaviorSubject<any>;
+	//public filteredTaskList$!: BehaviorSubject<any>;
 	public searchText!: string;
 	modalRef?: BsModalRef;
 	minTaskDate:Date = new Date();
@@ -22,7 +22,9 @@ export class TaskListComponent implements OnInit {
 	constructor(
 		private taskService: TaskService,
 		private modalService: BsModalService
-	) { }
+	) {
+
+	}
 
 
 	ngOnInit() {
@@ -32,39 +34,18 @@ export class TaskListComponent implements OnInit {
 
 	loadTasks() {
 		this.taskService.getTasks().subscribe({
-			next: (result) => {
-				this.taskList = result;
-				this.taskList$ = new BehaviorSubject(result);
-				this.filteredTaskList$ = new BehaviorSubject(result);
+			next:(taskList)=>{
+				this.taskList = taskList;
+			},
+			error(e){
+				throw e.error;
 			}
 		});
 	}
 
-	filterTasks(searchText:string){
-		if(searchText.length < 3){
-			this.filteredTaskList$.next(this.taskList$.getValue());
-			return;
-		}
-
-		this.taskList$.pipe(
-			filter((taskList)=>{
-			taskList = taskList.filter((task:Task)=>{
-				return task.DESCRIPTION.toLowerCase().includes(searchText.toLowerCase()) ||
-						task.PRIORITY.toLowerCase().includes(searchText.toLowerCase());
-			});
-
-			this.filteredTaskList$.next(taskList);
-			return taskList;
-		})).subscribe({
-			next:(taskList)=>{
-
-			}
-		})
-	}
-
 	clearSearch(){
 		this.searchText = '';
-		this.filterTasks('');
+		this.loadTasks();
 	}
 
 	openModal(template: TemplateRef<any>) {
